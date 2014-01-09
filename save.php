@@ -16,8 +16,8 @@ $array = json_decode($json, true);
 
 //file_put_contents($file, $string, FILE_APPEND | LOCK_EX);
 
-SaveMeasurement($array);
-
+$result = SaveMeasurement($array);
+exit(json_encode($result)); //sends back "true" if operation is a success
 
 
 function SaveMeasurement($array){
@@ -33,12 +33,13 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
-mysqli_query($con,"INSERT INTO readings (APIKey, PID, PIDValue, EventDate) 
+$result = mysqli_query($con,"INSERT INTO readings (APIKey, PID, PIDValue, EventDate) 
 VALUES ('".$array["APIKey"]."', '".$array["PID"]."', '".$array["PIDValue"]."', '".$array["EventDate"]."')");
 
 
 mysqli_close($con);
 
+return $result;
 }
 
 ?>
