@@ -29,6 +29,13 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
+//Input validation
+if(!is_numeric($array["lat"])){
+	return 0;
+}
+
+
+//TODO: SQL Injection vulnerability
 // Get user ID (uid) based on API Key
 $select = mysqli_query($con,"select uid from users where APIKey = '".$array["APIKey"]."'"); 
 //$row = $select->fetch_row();
