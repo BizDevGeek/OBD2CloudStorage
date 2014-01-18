@@ -12,11 +12,11 @@ $array = json_decode($json, true);
 //$string = date("c")."-".$json . "\n";
 //file_put_contents($file, $string, FILE_APPEND | LOCK_EX);
 
-$result = SaveMeasurement($array);
+$result = SaveGPSData($array);
 exit(json_encode($result)); //sends back "true" if operation is a success
 
 
-function SaveMeasurement($array){
+function SaveGPSData($array){
 
 //Config script contains setup information. Required. 
 include 'config.php';
@@ -36,8 +36,8 @@ mysqli_data_seek($select, 0);
 $row = mysqli_fetch_row($select);
 $uid = $row[0];
 
-$result = mysqli_query($con,"INSERT INTO gps (uid, lat, lng, EventDate) 
-VALUES ('".$uid."', ".$array["lat"].", ".$array["lng"].", '".$array["EventDate"]."')");
+$result = mysqli_query($con,"INSERT INTO gps (uid, lat, lon, EventDate) 
+VALUES ('".$uid."', ".$array["lat"].", ".$array["lon"].", '".$array["EventDate"]."')");
 
 
 mysqli_close($con);
