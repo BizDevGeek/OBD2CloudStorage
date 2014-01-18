@@ -30,7 +30,7 @@ if (mysqli_connect_errno())
   }
 
 // Get user ID (uid) based on API Key
-$select = mysqli_query($con,"select uid from users where APIKey = '$array["APIKey"]'); 
+$select = mysqli_query($con,"select uid from users where APIKey = '".$array["APIKey"]."'"); 
 //$row = $select->fetch_row();
 mysqli_data_seek($select, 0);
 $row = mysqli_fetch_row($select);
