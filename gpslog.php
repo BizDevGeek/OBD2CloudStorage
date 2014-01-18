@@ -36,8 +36,8 @@ mysqli_data_seek($select, 0);
 $row = mysqli_fetch_row($select);
 $uid = $row[0];
 
-$result = mysqli_query($con,"INSERT INTO gps (uid, lat, lon, EventDate) 
-VALUES ('".$uid."', ".$array["lat"].", ".$array["lon"].", '".$array["EventDate"]."')");
+$result = mysqli_query($con,"INSERT INTO gps (uid, lat, NS, lon, EW, EventDate) 
+VALUES ('".$uid."', ".$array["lat"].", '".$array["NS"]."', ".$array["lon"].", '".$array["EW"]."', '".$array["EventDate"]."')");
 
 
 mysqli_close($con);
