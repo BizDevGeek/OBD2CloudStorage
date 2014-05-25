@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="phpGPX" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata/>
+<wpt lat="42.34289062" lon="-70.58414062">
+<name>name</name>
+<cmt>asdf</cmt>
+<desc><![CDATA[asdf]]></desc>
+</wpt>
+<wpt lat="42.34289062" lon="-70.58414062">
+<name>name</name>
+<cmt>asdf</cmt>
+<desc><![CDATA[asdf]]></desc>
+</wpt>
+<wpt lat="42.34288574" lon="-70.58414062">
+<name>name</name>
+<cmt>asdf</cmt>
+<desc><![CDATA[asdf]]></desc>
+</wpt>
+</gpx>
