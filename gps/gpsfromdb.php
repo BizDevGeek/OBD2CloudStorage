@@ -15,7 +15,7 @@
 
 //Config script contains setup information. Required. 
 include '../config.php';
-require('phpGPX.php');
+require('phpGPX_JN.php');
 
 // a.) create instance of phpGoogleKML class
 $gps = new phpGPX();
@@ -34,7 +34,7 @@ if (mysqli_connect_errno())
 
 //$email = mysql_real_escape_string($array["Email"]);
 
-$result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps where uid = $uid limit 3");
+$result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps where uid = $uid limit 5");
 
 if(mysqli_num_rows($result)==0)
 {
@@ -58,7 +58,7 @@ while($row = mysqli_fetch_array($result)) {
                 $lon = $lon * -1;
         }
 
-	$gps->addPoint("name","asdf","asdf","adsf","asdf",$lat,$lon);
+	$gps->addPoint($lat,$lon,"2014-05-24T12:03:31Z");
 }
 
 mysqli_close($con);
