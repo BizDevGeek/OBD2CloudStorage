@@ -62,7 +62,7 @@ class phpGPX {
     $this->header .= $this->GetGpxTag();
     $this->header .= $this->GetMetadataTag();
     $this->header .= "\n<trk>\n";
-    $this->header .= "<name>Track Name</name>\n";
+    $this->header .= "<name>Raspberry Pi Carputer Track</name>\n";
     $this->header .= "<trkseg>\n";
       return $this->header;
   }

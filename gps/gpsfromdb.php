@@ -22,7 +22,10 @@ $gps = new phpGPX();
 $gps->filename = "gps_output.gpx";
 
 //GPS parameters
-$uid = 37;
+//$TrackName = "Raspberry Pi Carputer Track";
+$uid = 38;
+$startdt = "2014-05-28 00:00:00";
+$enddt = "2014-05-29 23:59:59";
 
 $con=mysqli_connect("localhost",$cfg_db,$cfg_db_passwd,$cfg_db_user);
 
@@ -34,7 +37,7 @@ if (mysqli_connect_errno())
 
 //$email = mysql_real_escape_string($array["Email"]);
 
-$result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps where uid = $uid limit 5");
+$result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps where uid = $uid and eventdate between '$startdt' and '$enddt'");
 
 if(mysqli_num_rows($result)==0)
 {
@@ -58,7 +61,7 @@ while($row = mysqli_fetch_array($result)) {
                 $lon = $lon * -1;
         }
 
-	$gps->addPoint($lat,$lon,"2014-05-24T12:03:31Z");
+	$gps->addPoint($lat,$lon,$row['eventdate']);
 }
 
 mysqli_close($con);
