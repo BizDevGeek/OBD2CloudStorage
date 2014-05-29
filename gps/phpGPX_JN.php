@@ -91,8 +91,11 @@ class phpGPX {
 */
 
   function addPoint($latitude,$longitude,$time) {
+	$dt = new DateTime($time);
+
     $this->pointWpt .= "<trkpt lat=\"".$latitude."\" lon=\"".$longitude."\">\n";
-    $this->pointWpt .= "<time>".$time."</time>\n";
+//    $this->pointWpt .= "<time>".$time."</time>\n";
+    $this->pointWpt .= "<time>".$dt->format(DateTime::ISO8601)."</time>\n";
     $this->pointWpt .= "</trkpt>\n";
     return $this->pointWpt;
   }
