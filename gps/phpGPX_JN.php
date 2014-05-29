@@ -61,16 +61,16 @@ class phpGPX {
       $this->header .= $this->GetXmlTag(); 
     $this->header .= $this->GetGpxTag();
     $this->header .= $this->GetMetadataTag();
-    $this->header .= "<trk>";
-    $this->header .= "<name>Track Name</name>";
-    $this->header .= "<trkseg>";
+    $this->header .= "\n<trk>\n";
+    $this->header .= "<name>Track Name</name>\n";
+    $this->header .= "<trkseg>\n";
       return $this->header;
   }
   
 
   function CreateFooter() {
-      $this->footer .= "</trkseg>";
-      $this->footer .= "</trk>";
+      $this->footer .= "\n</trkseg>\n";
+      $this->footer .= "</trk>\n";
       $this->footer .= "</gpx>\n";
       return $this->footer;
   }
