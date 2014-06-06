@@ -50,6 +50,7 @@ $gps->filename = "gps_output.gpx";
 /*
 //Hardcoded inputs for debugging:
 $uid = 38;
+$apikey =  P9wwTdj5P3o1Y195 //sample API
 $startdt = "2014-05-28 00:00:00";
 $enddt = "2014-05-29 23:59:59";
 $timezone_offset = 4; //UTC offset for your timezone. -4 is Eastern Standard Time.
@@ -57,7 +58,7 @@ $timezone_offset = 4; //UTC offset for your timezone. -4 is Eastern Standard Tim
 
 $apikey = $_POST['apikey'];
 $dtstart = $_POST['dtstart'];
-$dtend = $_POST['end'];
+$dtend = $_POST['dtend'];
 $timezone_offset = 4;
 
 
@@ -94,13 +95,13 @@ if($result == false)
 if(mysqli_num_rows($result)==0)
 {
 	//log("Failed to return data for $apikey");
-	file_put_contents("log.txt", "Failed to return data for $apikey"."\n", FILE_APPEND);
+	file_put_contents("log.txt", "Failed to return data for APIKey: $apikey; dtStart: $dtstart; dtEnd: $dtend"."\n", FILE_APPEND);
 	header("Location: http://www.blackboxpi.com/empty-gpx-file/");
 	exit;
-} else {
+}/* else { //temp redirect for if there's no SQL error. REMOVE THIS
         header("Location: http://www.blackboxpi.com");
         exit;
-}
+}*/
 
 while($row = mysqli_fetch_array($result)) {
 	//Shift the decimal left 2 digits because of how values are stored in the DB.
@@ -138,8 +139,10 @@ $gps->CreateGPXFile();
         <title>Download page</title>
 </head>
 <body>
-<a href="asdf">Download</a><br><br>
-API Key: <?php echo($apikey);?>
+<a href="gps_output.gpx">Download</a><br><br>
+API Key: <?php echo($apikey);?><br>
+Start Date: <?php echo($dtstart);?><br>
+End Date: <?php echo($dtend);?><br>
 </body>
 </html>
 
