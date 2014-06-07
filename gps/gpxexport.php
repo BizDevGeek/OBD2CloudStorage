@@ -44,7 +44,10 @@ require('phpGPX_JN.php'); //the code that generates the GPX XML file
 
 // a.) create instance of phpGoogleKML class
 $gps = new phpGPX();
-$gps->filename = "gps_output.gpx";
+$outputdir = "gpsexport/";
+$gps->outputDirectory = $outputdir;
+$file = uniqid().".gpx";
+$gps->filename = $file;
 
 //GPS parameters
 /*
@@ -128,7 +131,12 @@ while($row = mysqli_fetch_array($result)) {
 
 mysqli_close($con);
 
-$gps->CreateGPXFile();
+try {
+	$gps->CreateGPXFile();
+}
+catch(Exception $e){
+	file_put_contents("log.txt", "Failed to export GPX file: CreateGPXFile() - ".$e->getMessage()."\n", FILE_APPEND);
+}
 
 //Output HTML page w/ link to file
 ?>
@@ -139,7 +147,7 @@ $gps->CreateGPXFile();
         <title>Download page</title>
 </head>
 <body>
-<a href="gps_output.gpx">Download</a><br><br>
+<a href="<?php echo($outputdir.$file);?>">Download</a><br><br>
 API Key: <?php echo($apikey);?><br>
 Start Date: <?php echo($dtstart);?><br>
 End Date: <?php echo($dtend);?><br>
