@@ -1,5 +1,5 @@
 <?php
-/*
+
 //Outputs the export file to browser for download
 function SendToBrowser(){
         // open the file in a binary mode
@@ -14,16 +14,8 @@ function SendToBrowser(){
         fpassthru($fp);
 }
 
-//Logging function
-function log($info){
-        $file = "log.txt"
 
-        file_put_contents($file, $info, FILE_APPEND);
-}
-*/
-?>
 
-<?php
 //Jozef Nagy
 //5/2014
 //Reads GPS from db and outputs it into a standard GPX file format
@@ -37,6 +29,13 @@ function log($info){
 
 //return JSON array
 //exit(json_encode($apikey));
+
+function logger($msg){
+	$file = "log.txt";
+	//$d=date(Y-m-d--H-i-s);
+	$d=date("c");
+	file_put_contents($file, "$d - $msg\n", FILE_APPEND);
+}
 
 //Config script contains setup information. Required. 
 include '/var/www/obdapi/config.php'; //db login info
@@ -70,7 +69,7 @@ $con=mysqli_connect("localhost",$cfg_db,$cfg_db_passwd,$cfg_db_user);
 // Check connection
 if (mysqli_connect_errno())
 {
-	file_put_contents("log.txt", "db failed connect\n", FILE_APPEND);
+	logger("db connection failed");
 	echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
@@ -86,9 +85,10 @@ $dtend = $con->real_escape_string($dtend);
 //$result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps where uid = $uid and eventdate between '$startdt' and '$enddt'");
 $result = mysqli_query($con, "select lat, NS, lon, EW, eventdate from gps inner join users on gps.uid = users.uid where users.apikey = '$apikey' and eventdate between '$dtstart' and '$dtend' ");
 
+//General DB error w/ qry execution
 if($result == false)
 {
-        file_put_contents("log.txt", "qry error: ".$con->error."\n", FILE_APPEND);
+	logger("qry error: ".$con->error);
         echo htmlspecialchars("DB Error: ".$con->error);
         //header("Location: http://www.blackboxpi.com");
 	exit();
@@ -98,7 +98,7 @@ if($result == false)
 if(mysqli_num_rows($result)==0)
 {
 	//log("Failed to return data for $apikey");
-	file_put_contents("log.txt", "Failed to return data for APIKey: $apikey; dtStart: $dtstart; dtEnd: $dtend"."\n", FILE_APPEND);
+	logger("Failed to return data for APIKey: $apikey; dtStart: $dtstart; dtEnd: $dtend");
 	header("Location: http://www.blackboxpi.com/empty-gpx-file/");
 	exit;
 }/* else { //temp redirect for if there's no SQL error. REMOVE THIS
@@ -135,8 +135,10 @@ try {
 	$gps->CreateGPXFile();
 }
 catch(Exception $e){
-	file_put_contents("log.txt", "Failed to export GPX file: CreateGPXFile() - ".$e->getMessage()."\n", FILE_APPEND);
+	logger("Failed to export GPX file: CreateGPXFile() - ".$e->getMessage());
 }
+
+logger("Generated GPX file for APIKey:".$apikey);
 
 //Output HTML page w/ link to file
 ?>
