@@ -113,18 +113,30 @@ while($row = mysqli_fetch_array($result)) {
 	$lon = $row['lon'];
 	$lon = $lon / 100;
 
-	//Separate out the digits to the right of the decimal, they are the "seconds"
-	//You have to multiply by 60 to go from decimal to seconds.
-	//For now, drop that extra precision.
+	//Separate out the 2 digits to the right of the decimal, they are the "minutes"
+	//You have to divide by 60 to go from minutes to decimal.
 	$lat_minutes_decimal = substr($lat, strpos($lat, ".")+1, 2) / 60;
 	$lon_minutes_decimal = substr($lon, strpos($lon, ".")+1, 2) / 60;
 	$lat_minutes_decimal = round($lat_minutes_decimal, 2);
 	$lon_minutes_decimal = round($lon_minutes_decimal, 2);
 	//logger("Lat: ".$lat." - Lon:".$lon." - LatMinutesAsDecimal: ".$lat_minutes_decimal." - LonMinutesAsDecimal: ".$lon_minutes_decimal);
 
-	//now take the Lat and Lon values and add the decimal version of the Minutes to get a final decimal value
-	$lat = substr($lat, 0, strpos($lat, ".")) + $lat_minutes_decimal;
-	$lon = substr($lon, 0, strpos($lon, ".")) + $lon_minutes_decimal;
+	//the digits to the right of the minutes value (digits starting from 3rd digit to right of decimal) are already in decimal format.
+	//capture them and add them back onto the $lat and $lon values. 
+	$seconds_precision = 6; //With my GPS device there are 6 digits. Might change for others.
+        $lat_seconds_decimal = substr($lat, strpos($lat, ".")+3, $seconds_precision);
+        $lon_seconds_decimal = substr($lon, strpos($lon, ".")+3, $seconds_precision);
+	//convert the digits into decimal value so they can be added as numeric data types to $lat and $lon. Otherwise, concatenate them. 
+	$lat_seconds_decimal = $lat_seconds_decimal / 100000000; //this depends on precision from $seconds_precision. make # of 0's equal to it, plus 2.
+	$lon_seconds_decimal = $lon_seconds_decimal / 100000000;
+	logger("Lat: ".$lat." - Lon:".$lon." - LatSecAsDecimal: ".$lat_seconds_decimal." - LonSecAsDecimal: ".$lon_seconds_decimal);
+
+	//now take the Lat and Lon values and add the decimal version of the Minutes and Seconds to get a final decimal value
+	logger("Lat: ".$lat." - Equation -- ".substr($lat,0,strpos($lat,"."))." - ".$lat_minutes_decimal." - ".$lat_seconds_decimal);
+	$lat = substr($lat, 0, strpos($lat, ".")) + $lat_minutes_decimal + $lat_seconds_decimal;
+	logger("Formatted Lat: ".$lat);
+	$lon = substr($lon, 0, strpos($lon, ".")) + $lon_minutes_decimal + $lon_seconds_decimal;
+
 
 	//Set whether lat or lon is positive or negative
 	if($row['NS']=="S"){
