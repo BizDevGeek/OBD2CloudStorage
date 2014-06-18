@@ -113,6 +113,19 @@ while($row = mysqli_fetch_array($result)) {
 	$lon = $row['lon'];
 	$lon = $lon / 100;
 
+	//Separate out the digits to the right of the decimal, they are the "seconds"
+	//You have to multiply by 60 to go from decimal to seconds.
+	//For now, drop that extra precision.
+	$lat_minutes_decimal = substr($lat, strpos($lat, ".")+1, 2) / 60;
+	$lon_minutes_decimal = substr($lon, strpos($lon, ".")+1, 2) / 60;
+	$lat_minutes_decimal = round($lat_minutes_decimal, 2);
+	$lon_minutes_decimal = round($lon_minutes_decimal, 2);
+	//logger("Lat: ".$lat." - Lon:".$lon." - LatMinutesAsDecimal: ".$lat_minutes_decimal." - LonMinutesAsDecimal: ".$lon_minutes_decimal);
+
+	//now take the Lat and Lon values and add the decimal version of the Minutes to get a final decimal value
+	$lat = substr($lat, 0, strpos($lat, ".")) + $lat_minutes_decimal;
+	$lon = substr($lon, 0, strpos($lon, ".")) + $lon_minutes_decimal;
+
 	//Set whether lat or lon is positive or negative
 	if($row['NS']=="S"){
 		$lat = $lat * -1;
