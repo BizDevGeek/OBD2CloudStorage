@@ -1,0 +1,4 @@
+[DB]
+cfg_db = 'db_name';
+cfg_db_user = 'db_user';
+cfg_db_passwd = 'db_password';
