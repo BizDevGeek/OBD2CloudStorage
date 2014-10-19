@@ -6,6 +6,7 @@ import os
 from ConfigParser import *
 import datetime
 import mysql.connector
+from array import *
 
 c = ConfigParser()
 c.read("../config.txt")
@@ -26,8 +27,9 @@ if not os.path.exists("graphs"):
 cnx = mysql.connector.connect(user=db_user, database=db_name, password=db_passwd)
 cursor = cnx.cursor()
 
-query = ("SELECT count(*) as total FROM gps "
-         "WHERE EventDate BETWEEN %s AND %s and uid=%s")
+#query = ("SELECT count(*) as total FROM gps "
+#         "WHERE EventDate BETWEEN %s AND %s and uid=%s")
+query = ("select lat from gps where eventdate between %s and %s and uid=%s limit 10")
 
 dtStart = datetime.date(2013, 1, 1)
 dtEnd = datetime.date(2014, 12, 31)
@@ -36,13 +38,17 @@ UID = 17
 cursor.execute(query, (dtStart,dtEnd,UID))
 
 #Add data into object to feed into plotter
-for (total) in cursor:
-  print(total)
+results = array('f') #f=floating point values
+for (lat) in cursor:
+	print(lat[0])
+#	print("{}".format(lat))
+	results.append(lat[0]) #TODO: lat is a tuple. convert ot value
 
 cursor.close()
 cnx.close()
 
 #Plot the GPS results to a image file
-plt.plot([1,2,3,4])
+#plt.plot([1,2,3,4])
+plt.plot(results)
 plt.ylabel('some numbers')
 plt.savefig('graphs/test.png')
