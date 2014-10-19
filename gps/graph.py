@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 from ConfigParser import *
 import datetime
-#import mysql.connector
+import mysql.connector
 
 c = ConfigParser()
 c.read("../config.txt")
@@ -19,22 +19,25 @@ if not os.path.exists("graphs"):
     os.makedirs("graphs")
 
 #Grab GPS data from database
-#cnx = mysql.connector.connect(user=db_user, database=db_name, password=db_passwd)
-#cursor = cnx.cursor()
+#debug:
+#print db_name
+#print db_user
+#print db_passwd
+cnx = mysql.connector.connect(user=db_user, database=db_name, password=db_passwd)
+cursor = cnx.cursor()
 
-query = ("SELECT count(*) FROM gps "
+query = ("SELECT count(*) as total FROM gps "
          "WHERE EventDate BETWEEN %s AND %s and uid=%s")
 
-dtStart = datetime.date(1999, 1, 1)
-dtEnd = datetime.date(1999, 12, 31)
-UID = 1
+dtStart = datetime.date(2013, 1, 1)
+dtEnd = datetime.date(2014, 12, 31)
+UID = 17
 
 cursor.execute(query, (dtStart,dtEnd,UID))
 
 #Add data into object to feed into plotter
-#for (first_name, last_name, hire_date) in cursor:
-#  print("{}, {} was hired on {:%d %b %Y}".format(
-#    last_name, first_name, hire_date))
+for (total) in cursor:
+  print(total)
 
 cursor.close()
 cnx.close()
