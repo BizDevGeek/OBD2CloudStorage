@@ -24,22 +24,31 @@ form = cgi.FieldStorage()
 #file.close()
 
 print "Content-type: text/html\n"
+print 
+print "<html><body>"
 print "Graph generated for: <br>"
 print "<img src='/custom/graphs/test.png'>"
 #print "graph generated: "
 #sys.exit()
 
-
 c = ConfigParser()
 c.read("../config.txt")
-
+print "asdf"
 db_name = c.get("DB", "cfg_db")
 db_user = c.get("DB", "cfg_db_user")
 db_passwd = c.get("DB", "cfg_db_passwd")
 
+#==============================================
+print "fff" #<<<<<<--------- this won't print
+#=============================================
+
 #Create the directory to store the output files (graphs)
 if not os.path.exists("graphs"):
-    os.makedirs("graphs")
+	try:
+		print "test"
+		os.makedirs("graphs")
+	except ValueError:
+		print "failed to make subdir"
 
 #Grab GPS data from database
 #debug:
@@ -80,3 +89,5 @@ plt.ylabel('some numbers')
 
 #print "Graph generated for: " + str(UID) + "<br>"
 #print "<img src='/custom/graphs/test.png'>"
+print "<br>asdf"
+print "</body></html>"
