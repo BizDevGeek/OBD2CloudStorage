@@ -1,8 +1,15 @@
 import requests
 import json
+from ConfigParser import *
+
+
+c = ConfigParser()
+c.read("config_py.txt")
+
+APIKey = c.get("Settings", "api_key")
 
 headers = {'Content-type': 'application/json',
-           "Ocp-Apim-Subscription-Key":"a09add9425da4753bfb094f2ed94a70f"}
+           "Ocp-Apim-Subscription-Key":APIKey}
 
 #data = {"url":"http://www.myhappybeagle.com/wp-content/uploads/2016/08/Beagles-And-Buddies.jpg"}
 data ={"url":"https://ashleighbugg.files.wordpress.com/2015/02/img_8471-001.jpg"}

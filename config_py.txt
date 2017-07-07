@@ -1,0 +1,3 @@
+[Settings]
+api_key = DEFAULTAPIKEY
+
